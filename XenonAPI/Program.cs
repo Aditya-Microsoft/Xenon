@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using XenonAPI.Database;
 using XenonAPI.Repositories.Contracts;
 using XenonAPI.Repositories.Implementation;
+using XenonAPI.Services.Contracts;
+using XenonAPI.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+
 
 var app = builder.Build();
 

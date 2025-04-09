@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using XenonAPI.Models;
-using XenonAPI.Repositories.Contracts;
+using XenonAPI.Services.Contracts;
 
 namespace XenonAPI.Controllers
 {
@@ -8,27 +8,27 @@ namespace XenonAPI.Controllers
     [Route("api/tenants")]
     public class TenantController : ControllerBase
     {
-        private readonly ITenantRepository _tenantRepository;
+        private readonly ITenantService _tenantService;
 
-        public TenantController(ITenantRepository tenantRepository)
+        public TenantController(ITenantService tenantService)
         {
-            _tenantRepository = tenantRepository;
+            _tenantService = tenantService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _tenantRepository.GetAllAsync());
+        public async Task<IActionResult> GetAll() => Ok(await _tenantService.GetAllAsync());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var tenant = await _tenantRepository.GetByIdAsync(id);
+            var tenant = await _tenantService.GetByIdAsync(id);
             return tenant != null ? Ok(tenant) : NotFound();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Tenant tenant)
         {
-            await _tenantRepository.AddAsync(tenant);
+            await _tenantService.AddAsync(tenant);
             return CreatedAtAction(nameof(GetById), new { id = tenant.Id }, tenant);
         }
 
@@ -36,22 +36,22 @@ namespace XenonAPI.Controllers
         public async Task<IActionResult> Update(int id, Tenant tenant)
         {
             if (id != tenant.Id) return BadRequest();
-            await _tenantRepository.UpdateAsync(tenant);
+            await _tenantService.UpdateAsync(tenant);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _tenantRepository.DeleteAsync(id);
+            await _tenantService.DeleteAsync(id);
             return NoContent();
         }
 
         [HttpGet("upcoming-rent-due")]
-        public async Task<IActionResult> GetUpcomingRentDue() => Ok(await _tenantRepository.GetUpcomingRentDueAsync());
+        public async Task<IActionResult> GetUpcomingRentDue() => Ok(await _tenantService.GetUpcomingRentDueAsync());
 
         [HttpGet("vacating-soon")]
-        public async Task<IActionResult> GetVacatingSoon() => Ok(await _tenantRepository.GetVacatingSoonAsync());
+        public async Task<IActionResult> GetVacatingSoon() => Ok(await _tenantService.GetVacatingSoonAsync());
     }
 
 }

@@ -11,6 +11,7 @@ namespace XenonAPI.Database
         }
 
         public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

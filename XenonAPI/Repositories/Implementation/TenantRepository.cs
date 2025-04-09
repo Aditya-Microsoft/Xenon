@@ -5,6 +5,7 @@ using XenonAPI.Repositories.Contracts;
 
 namespace XenonAPI.Repositories.Implementation
 {
+    
     public class TenantRepository : GenericRepository<Tenant>, ITenantRepository
     {
         private readonly ApplicationDbContext _context;
